@@ -1,78 +1,86 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import './index.css';
+import { useState, useEffect } from 'react'
+
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
-  const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(2);
 
-  const renders = useRef(0);
-  const timerId = useRef();
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [idSec, setIdSec] = useState(null);
+  const [idMin, setIdMin] = useState(null);
+  let over;
+  
+  const isOver = () => {
+    if (seconds > 2 && minutes > 0){
+      return true
+    } else {
+      return false;
+    }
+  };
+
+
+
+  const start = () => {
+    if (idMin && idSec !== null) {
+      clearInterval(idSec);
+      clearInterval(idMin);
+    } else {
+ 
+      setIdSec(setInterval( () =>{
+        setSeconds(prev => prev + 1);
+      }, 1000));
+      setIdMin(setInterval( () =>{
+        setMinutes(prev => prev + 1);
+      }, 60000));
+    }
+  }
+
+  const stop = () => {
+    clearInterval(idMin);
+    clearInterval(idSec);
+    setIdSec(null);
+    setIdMin(null);
+  }
+
+  const reset = () => {
+    setSeconds(0);
+    setMinutes(0);
+  }
 
   useEffect(() => {
-    if (seconds === 0 && minutes > 0) {
-      setMinutes(prev => prev - 1);
-      setSeconds(60);
-    }
-  }, [seconds, minutes]);
+    over = isOver();
+    console.log(over);
+    console.log(minutes + " min " + seconds + " sec");
 
-  const startTimer = () => {
-    if (timerId.current) return; 
-    timerId.current = setInterval(() => {
-      renders.current++;
-        if (seconds === 60 && minutes === -1) {
-          stopTimer();
-          return;
-          <p>Time to take a break!</p>
+    if (seconds === 60) {
+      setSeconds(0);
+    } else if (over) {
+        stop(); 
 
-        } else if (seconds >= 0) {
-          setSeconds(prev => prev - 1);
-        } else {
-          setMinutes(prev => prev - 1);
-          setSeconds(59);
-        }
-      }, 1000);
-    };
-  const stopTimer = () => {
-    clearInterval(timerId.current);
-    timerId.current = null;
-  };
-
-  const resetTimer = () => {
-    stopTimer();
-    setMinutes(24);
-    setSeconds(60);
-  };
+      }
+    }, [seconds, minutes]);
+  
 
   return (
     <>
-      <Header />
-      <main className="App">
-        <section className="section">
-          <button className="button" onClick={startTimer}>
-            Start
-          </button>
-          <button className="button" onClick={stopTimer}>
-            Stop
-          </button>
-          <button className="button" onClick={resetTimer}>
-            Reset
-          </button>
-        </section>
-        <br />
-        <br />
-        <div className='counterContainer'>
-          <p className='counter'>
-             { seconds === 60 ? minutes + 1 : minutes < 10 || seconds === 60 ? '0' + minutes : minutes} : {seconds === 60 ? '00' : seconds < 10 ? '0' + seconds : seconds} 
-          </p>
-        </div>
-        <br />
-        <br />
-      </main>
-      <Footer />
+      <Header></Header>
+      <div className='counterContainer'>
+        {over ? (
+            <p className='counter'>over</p>
+          ) : (
+            <p className='counter'>{minutes < 10 ? '0'+ minutes : minutes} : {seconds < 10 ? '0'+seconds : seconds}</p>
+          )}
+      </div> 
+     <br></br>
+      <section>
+        <button onClick={start}>Start</button>
+        <button onClick={stop}>Stop</button>
+        <button onClick={reset}>Reset</button>
+      </section>    
+      <Footer></Footer>  
     </>
-  );
+  )
 }
 
-export default App;
+export default App
