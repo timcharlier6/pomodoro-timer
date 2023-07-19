@@ -127,9 +127,9 @@ function App() {
             </p>
           </button>
           <section className='counterContainer'>
-            <div className='arrowMin'>
+            <div className='arrowUp'>
               <button className='arrow' onClick={upMin}><SlArrowUp className='button'/></button>
-              <button className='arrow' onClick={downMin}><SlArrowDown className='button'/></button>
+              <button className='arrow' onClick={upSec}><SlArrowUp className='button'/></button>
             </div>
             <div className='blackBg'>
               {minutes === 0 && seconds === 0 && idMin == null && idSec == null ? (
@@ -138,15 +138,15 @@ function App() {
                   <p className='counter'>{minutes < 10 ? '0'+ minutes : minutes} <span className='clicking'>:</span> {seconds === 60 ? '00' : seconds < 10 ? '0' + seconds : seconds}</p>
                 )} 
             </div>
-            <div className='arrowSec'>
-              <button className='arrow' onClick={upSec}><SlArrowUp className='button'/></button>
+            <div className='arrowDown'>
+             <button className='arrow' onClick={downMin}><SlArrowDown className='button'/></button>
               <button className='arrow' onClick={downSec}><SlArrowDown className='button'/></button>
             </div>
           </section> 
 
           <section className='buttonContainer'>
-            <button className="button" onClick={start}>Start</button>
-            <button className="button" onClick={stop}>Stop</button>
+            <button className="buttonGo" onClick={start}>Start</button>
+            <button className="buttonGo" onClick={stop}>Stop</button>
           </section>   
         </main>
         <Footer></Footer>  
