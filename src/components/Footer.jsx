@@ -5,7 +5,9 @@ const Footer = () => {
     }
 
     return (
-        <p className="footer">Becode Tim Charlier {getDate()}</p>
+        <footer className="footer">
+            <p className="footerText">Becode Tim Charlier {getDate()}</p>
+        </footer>
     )
 }
 
